@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using SaudeAPI.Models;
+
 namespace SaudeAPI.Configs
 {
    public class SaudeContext : DbContext

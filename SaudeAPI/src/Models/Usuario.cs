@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SaudeAPI.Models
 {
     public class Usuario

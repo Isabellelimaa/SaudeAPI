@@ -1,10 +1,11 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SaudeAPI.Models
 {
     public class Paciente
     {
-        [key]
+        [Key]
         public int CdPaciente {get; set;}
         [StringLength(150)]
         public string NmPaciente {get; set;}
