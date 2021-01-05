@@ -22,5 +22,7 @@ namespace SaudeAPI.Models
         public string DcComplmnto {get; set;}
         [StringLength(10)]
         public string DcCep {get; set;}
+
+        public Hsptal Hsptal {get; set;} 
     }
 }

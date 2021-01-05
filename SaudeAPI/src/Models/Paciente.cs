@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SaudeAPI.Models
@@ -16,5 +17,7 @@ namespace SaudeAPI.Models
         public int CdUsuarioRgst {get; set;}
         [Required]
         public DateTime DtRgst {get; set;}
+
+        public List<Slctcao> Slctcao {get; set;}
     }
 }

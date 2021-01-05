@@ -14,5 +14,7 @@ namespace SaudeAPI.Models
         public string DcEmail {get; set;}
         [StringLength(255)]
         public string DcTokencel {get; set;} 
+
+        public Hsptal Hsptal {get; set;}
     }
 }

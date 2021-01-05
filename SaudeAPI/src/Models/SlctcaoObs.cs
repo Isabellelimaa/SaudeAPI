@@ -13,5 +13,8 @@ namespace SaudeAPI.Models
         public int CdUsuario {get; set;}
         [Required]
         public DateTime DtRgst {get; set;}
+
+        public Slctcao Slctcao {get; set;}
+
     }
 }

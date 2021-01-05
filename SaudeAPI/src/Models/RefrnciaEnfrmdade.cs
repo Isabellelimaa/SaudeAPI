@@ -8,5 +8,8 @@ namespace SaudeAPI.Models
         public int CdRefrnciaEnfrmdade {get; set;}
         public int CdRefrncia {get; set;}
         public int CdEnfrmdade {get; set;}
+
+        public Refrncia Refrncia {get; set;}
+        public Enfrmdade Enfrmdade {get; set;}
     }
 }

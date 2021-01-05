@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SaudeAPI.Models
@@ -8,5 +9,8 @@ namespace SaudeAPI.Models
         public int CdStatus {get; set;}
         [StringLength(200)]
         public string NmStatus {get; set;}
+
+        public List<Slctcao> Slctcao {get; set;}
+
     }
 }
