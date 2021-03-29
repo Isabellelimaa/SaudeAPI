@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using SaudeAPI.Models.Db;
 using SaudeAPI.Services.Interfaces;
+using SaudeAPI.Models;
+using SaudeAPI.src.Models.Controllers;
 
 namespace SaudeAPI.Controllers
 {
@@ -19,15 +21,34 @@ namespace SaudeAPI.Controllers
             _authService = authService;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Object>> Login([FromBody] Usuario usuario)
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromBody] LoginUser loginUser)
         {
             try
             {
-                var request = await _authService.Login(usuario);
+                var request = await _authService.Login(loginUser.dcLogin, loginUser.dcSenha);
                 if (!request.Sucesso)
                     return BadRequest(request.Mensagem);
                 return Ok(request);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> CreateUsuario(string dcLogin, string dcSenha, string dcEmail)
+        {
+            try
+            {
+                var request = await _authService.CreateUsuario(dcLogin, dcSenha, dcEmail);
+                if (!request.Sucesso)
+                    return BadRequest(request.Mensagem);
+                return Ok(request);
+
             }
             catch (Exception ex)
             {

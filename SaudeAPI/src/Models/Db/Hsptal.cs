@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaudeAPI.Models.Db
 {
@@ -9,7 +10,6 @@ namespace SaudeAPI.Models.Db
         public int CdHsptal { get; set; }
         [StringLength(255)]
         public string NmHsptal { get; set; }
-        public int CdUsuario { get; set; }
         public int CdEndrco { get; set; }
         [StringLength(15)]
         public string DcTlfone { get; set; }

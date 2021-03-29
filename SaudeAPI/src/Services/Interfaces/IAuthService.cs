@@ -6,6 +6,7 @@ namespace SaudeAPI.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<RespostaControlador> Login(Usuario usuario);
+        Task<RespostaControlador> Login(string dcLogin, string dcSenha);
+        Task<RespostaControlador> CreateUsuario(string dcLogin, string dcSenha, string dcEmail);
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SaudeAPI.Models.Db
@@ -23,6 +24,6 @@ namespace SaudeAPI.Models.Db
         [StringLength(10)]
         public string DcCep { get; set; }
 
-        public Hsptal Hsptal { get; set; }
+        public List<Hsptal> Hsptal { get; set; }
     }
 }
