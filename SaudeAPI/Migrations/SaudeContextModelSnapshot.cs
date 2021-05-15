@@ -421,7 +421,7 @@ namespace SaudeAPI.Migrations
 
             modelBuilder.Entity("SaudeAPI.Models.Db.Hsptal", b =>
                 {
-                    b.HasOne("SaudeAPI.Models.Db.Endrco", "Endrco")
+                    b.HasOne("SaudeAPI.Models.Db.Endrco", "Endrco");
                 });
 
             modelBuilder.Entity("SaudeAPI.Models.Db.HsptalRefrncia", b =>

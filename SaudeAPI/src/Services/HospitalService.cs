@@ -24,7 +24,7 @@ namespace SaudeAPI.src.Services
         {
             try
             {
-                var newHsptal = new Hsptal();
+                //var newHsptal = new Hsptal();
 
                 return new RespostaControlador(false, "Usuario ou senha inválido.");
             }

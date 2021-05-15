@@ -16,10 +16,10 @@ namespace SaudeAPI.Context
 
         public virtual DbSet<Endrco> Endrco { get; set; }
         public virtual DbSet<Enfrmdade> Enfrmdade { get; set; }
-        public virtual DbSet<Endrco> Endrco { get; set; }
         public virtual DbSet<Exame> Exame { get; set; }
         public virtual DbSet<Hsptal> Hsptal { get; set; }
         public virtual DbSet<HsptalRefrncia> HsptalRefrncia { get; set; }
+        public virtual DbSet<Log> Log { get; set; }
         public virtual DbSet<Paciente> Paciente { get; set; }
         public virtual DbSet<Refrncia> Refrncia { get; set; }
         public virtual DbSet<RefrnciaEnfrmdade> RefrnciaEnfrmdade { get; set; }
@@ -29,6 +29,5 @@ namespace SaudeAPI.Context
         public virtual DbSet<SlctcaoObs> SlctcaoObs { get; set; }
         public virtual DbSet<Status> Status { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
-        public virtual DbSet<Log> Log { get; set; }
     }
 }

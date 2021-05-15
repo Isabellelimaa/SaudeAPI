@@ -6,7 +6,7 @@ using SaudeAPI.Context;
 using SaudeAPI.Models;
 using SaudeAPI.Models.Db;
 using SaudeAPI.Services.Interfaces;
-using SaudeAPI.src.Models.Controller;
+using SaudeAPI.src.Models.Controllers;
 
 namespace SaudeAPI.Services
 {
@@ -63,10 +63,24 @@ namespace SaudeAPI.Services
         {
             try
             {
-                var user = new Usuario(createUsuario.DcLogin, createUsuario.DcSenha, createUsuario.DcSenha);
-                await _context.Usuario.AddAsync(user);
+                var user = new Usuario();
 
-                var address = new Endrco(
+                if (string.IsNullOrEmpty(createUsuario.DcLogin) || string.IsNullOrEmpty(createUsuario.DcSenha) || string.IsNullOrEmpty(createUsuario.DcEmail))
+                    return new RespostaControlador(false, "Usuario, senha ou email não informados.");
+
+                user = await _context.Usuario
+                               .FirstOrDefaultAsync(f => f.DcLogin.ToLower() == createUsuario.DcLogin.ToLower());
+
+                if (user != null)
+                    return new RespostaControlador(false, "Usuário já cadastrado.");
+
+                var newSenha = _crypto.ChangePassword(createUsuario.DcSenha);
+
+                var newUsuario = new Usuario(createUsuario.DcLogin, createUsuario.DcSenha, createUsuario.DcSenha);
+                
+                await _context.AddAsync<Usuario>(user);
+
+                var newEndrco = new Endrco(
                     createUsuario.Endereco.NmEstado,
                     createUsuario.Endereco.NmCidade,
                     createUsuario.Endereco.NmBairro,
@@ -75,24 +89,24 @@ namespace SaudeAPI.Services
                     createUsuario.Endereco.DcComplmnto,
                     createUsuario.Endereco.DcCep);
 
-                await _context.Endrco.AddAsync(address);
+                await _context.AddAsync<Endrco>(newEndrco);
+                await _context.SaveChangesAsync();
 
-                var hospital = new Hsptal(
+                var newHsptal = new Hsptal(
                     createUsuario.Hospital.NmHsptal,
-                    user.CdUsuario,
-                    address.CdEndrco,
+                    newUsuario.CdUsuario,
+                    newEndrco.CdEndrco,
                     createUsuario.Hospital.DcTlfone,
                     createUsuario.Hospital.QtLeito);
 
-                await _context.Hsptal.AddAsync(hospital);
-
+                await _context.AddAsync<Hsptal>(newHsptal);
                 await _context.SaveChangesAsync();
 
-                return new RespostaControlador(true, "Ok", createUsuario);
+                return new RespostaControlador(true, "Usuário criado com sucesso.", newUsuario);
             }
             catch (Exception ex)
             {
-                return await _logService.GerarLog(new Log(0, "Criar Usuário: " + ex.Message, DateTime.Now));
+                return await _logService.GerarLog(new Log(0, "CreateUsuario: " + ex.Message, DateTime.Now));
             }
         }
     }

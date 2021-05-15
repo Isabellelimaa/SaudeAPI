@@ -26,10 +26,7 @@ namespace SaudeAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Saude.Api", Version = "v1" });
             });
             services.ConfigureStartup(Configuration);
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Saude.Api", Version = "v1" });
-            });
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
