@@ -4,6 +4,17 @@ namespace SaudeAPI.Models.Db
 {
     public class Usuario
     {
+        public Usuario()
+        {
+        }
+
+        public Usuario(string dcLogin, string dcSenha, string dcEmail)
+        {
+            DcLogin = dcLogin;
+            DcSenha = dcSenha;
+            DcEmail = dcEmail;
+        }
+
         [Key]
         public int CdUsuario { get; set; }
         [StringLength(50)]

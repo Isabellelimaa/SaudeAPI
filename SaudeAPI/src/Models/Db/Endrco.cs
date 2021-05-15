@@ -4,6 +4,18 @@ namespace SaudeAPI.Models.Db
 {
     public class Endrco
     {
+        public Endrco(string nmEstado, string nmCidade, string nmBairro, string nmRua, int nrNumero, string dcComplmnto, string dcCep)
+        {
+            NmPais = "Brasil";
+            NmEstado = nmEstado;
+            NmCidade = nmCidade;
+            NmBairro = nmBairro;
+            NmRua = nmRua;
+            NrNumero = nrNumero;
+            DcComplmnto = dcComplmnto;
+            DcCep = dcCep;
+        }
+
         [Key]
         public int CdEndrco { get; set; }
         [StringLength(100)]

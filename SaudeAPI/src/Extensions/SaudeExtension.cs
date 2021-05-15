@@ -34,7 +34,7 @@ namespace SaudeAPI.Extensions
 
         public static void ConfigureDB(IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<SaudeContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<SaudeContext>(options => options.UseMySql(connectionString, providerOptions => providerOptions.EnableRetryOnFailure()));
         }
 
         public static void ConfigureServices(IServiceCollection services)

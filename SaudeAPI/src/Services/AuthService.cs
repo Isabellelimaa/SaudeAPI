@@ -6,6 +6,7 @@ using SaudeAPI.Context;
 using SaudeAPI.Models;
 using SaudeAPI.Models.Db;
 using SaudeAPI.Services.Interfaces;
+using SaudeAPI.src.Models.Controller;
 
 namespace SaudeAPI.Services
 {
@@ -55,6 +56,43 @@ namespace SaudeAPI.Services
             catch (Exception ex)
             {
                 return await _logService.GerarLog(new Log(0, "Login: " + ex.Message, DateTime.Now));
+            }
+        }
+
+        public async Task<RespostaControlador> Create(CreateUsuario createUsuario)
+        {
+            try
+            {
+                var user = new Usuario(createUsuario.DcLogin, createUsuario.DcSenha, createUsuario.DcSenha);
+                await _context.Usuario.AddAsync(user);
+
+                var address = new Endrco(
+                    createUsuario.Endereco.NmEstado,
+                    createUsuario.Endereco.NmCidade,
+                    createUsuario.Endereco.NmBairro,
+                    createUsuario.Endereco.NmRua,
+                    createUsuario.Endereco.NrNumero,
+                    createUsuario.Endereco.DcComplmnto,
+                    createUsuario.Endereco.DcCep);
+
+                await _context.Endrco.AddAsync(address);
+
+                var hospital = new Hsptal(
+                    createUsuario.Hospital.NmHsptal,
+                    user.CdUsuario,
+                    address.CdEndrco,
+                    createUsuario.Hospital.DcTlfone,
+                    createUsuario.Hospital.QtLeito);
+
+                await _context.Hsptal.AddAsync(hospital);
+
+                await _context.SaveChangesAsync();
+
+                return new RespostaControlador(true, "Ok", createUsuario);
+            }
+            catch (Exception ex)
+            {
+                return await _logService.GerarLog(new Log(0, "Criar Usuário: " + ex.Message, DateTime.Now));
             }
         }
     }

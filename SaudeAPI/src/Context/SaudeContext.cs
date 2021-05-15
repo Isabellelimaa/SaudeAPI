@@ -15,6 +15,7 @@ namespace SaudeAPI.Context
         }
 
         public virtual DbSet<Enfrmdade> Enfrmdade { get; set; }
+        public virtual DbSet<Endrco> Endrco { get; set; }
         public virtual DbSet<Exame> Exame { get; set; }
         public virtual DbSet<Hsptal> Hsptal { get; set; }
         public virtual DbSet<HsptalRefrncia> HsptalRefrncia { get; set; }

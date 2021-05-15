@@ -102,13 +102,13 @@ namespace SaudeAPI.Configurations
 
         public bool VerifyPassword(string loginPass, string basePass)
         {
-            var decryptPass = Decrypt(basePass, "4L3554ND70#M464N84");
+            var decryptPass = Decrypt(basePass, "P3DR0#S0US4");
             return (loginPass == decryptPass);
         }
 
         public string ChangePassword(string password)
         {
-            var encryptPass = Encrypt(password, "4L3554ND70#M464N84");
+            var encryptPass = Encrypt(password, "P3DR0#S0US4");
             return encryptPass;
         }
 
@@ -118,14 +118,14 @@ namespace SaudeAPI.Configurations
             {
                 var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
                 var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
-                var encryptPass = Encrypt(hash, "4L3554ND70#M464N84");
+                var encryptPass = Encrypt(hash, "P3DR0#S0US4");
                 return encryptPass;
             }
         }
 
         public string RecoverPassword(string password)
         {
-            return Decrypt(password, "4L3554ND70#M464N84");
+            return Decrypt(password, "P3DR0#S0US4");
         }
     }
 }
