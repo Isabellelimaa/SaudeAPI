@@ -26,23 +26,23 @@ namespace SaudeAPI.Services
             _logService = logService;
         }
 
-        public async Task<RespostaControlador> Login(Usuario userLogin)
+        public async Task<RespostaControlador> Login(string dcLogin, string dcSenha)
         {
             try
             {
                 var user = new Usuario();
                 bool validCredentials = false;
 
-                if (string.IsNullOrEmpty(userLogin.DcLogin) || string.IsNullOrEmpty(userLogin.DcSenha))
+                if (string.IsNullOrEmpty(dcLogin) || string.IsNullOrEmpty(dcSenha))
                     return new RespostaControlador(false, "Usuario ou senha inválido.");
 
                 user = await _context.Usuario
-                    .FirstOrDefaultAsync(f => f.DcLogin.ToLower() == userLogin.DcLogin.ToLower());
+                    .FirstOrDefaultAsync(f => f.DcLogin.ToLower() == dcLogin.ToLower());
 
                 if (user == null)
                     return new RespostaControlador(false, "Usuário não encontrado.");
 
-                validCredentials = _crypto.VerifyPassword(userLogin.DcSenha, user.DcSenha);
+                validCredentials = _crypto.VerifyPassword(dcSenha, user.DcSenha);
 
                 if (validCredentials)
                 {

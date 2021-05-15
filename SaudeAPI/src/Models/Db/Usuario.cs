@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaudeAPI.Models.Db
 {
@@ -23,9 +24,11 @@ namespace SaudeAPI.Models.Db
         public string DcSenha { get; set; }
         [StringLength(150)]
         public string DcEmail { get; set; }
+        public int CdHsptal { get; set; }
         [StringLength(255)]
         public string DcTokencel { get; set; }
 
+        [ForeignKey("CdHsptal")]
         public Hsptal Hsptal { get; set; }
     }
 }

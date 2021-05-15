@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SaudeAPI.Context;
 
 namespace SaudeAPI.Migrations
 {
     [DbContext(typeof(SaudeContext))]
-    partial class SaudeContextModelSnapshot : ModelSnapshot
+    [Migration("20210328153340_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,9 +101,6 @@ namespace SaudeAPI.Migrations
                     b.Property<int>("CdEndrco")
                         .HasColumnType("int");
 
-                    b.Property<int>("CdUsuario")
-                        .HasColumnType("int");
-
                     b.Property<string>("DcTlfone")
                         .HasColumnType("varchar(15) CHARACTER SET utf8mb4")
                         .HasMaxLength(15);
@@ -123,11 +122,7 @@ namespace SaudeAPI.Migrations
 
                     b.HasKey("CdHsptal");
 
-                    b.HasIndex("CdEndrco")
-                        .IsUnique();
-
-                    b.HasIndex("CdUsuario")
-                        .IsUnique();
+                    b.HasIndex("EndrcoCdEndrco");
 
                     b.ToTable("Hsptal");
                 });
@@ -422,6 +417,8 @@ namespace SaudeAPI.Migrations
             modelBuilder.Entity("SaudeAPI.Models.Db.Hsptal", b =>
                 {
                     b.HasOne("SaudeAPI.Models.Db.Endrco", "Endrco")
+                        .WithMany("Hsptal")
+                        .HasForeignKey("EndrcoCdEndrco");
                 });
 
             modelBuilder.Entity("SaudeAPI.Models.Db.HsptalRefrncia", b =>
