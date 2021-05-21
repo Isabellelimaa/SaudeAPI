@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaudeAPI.Models.Db
 {
@@ -16,11 +18,15 @@ namespace SaudeAPI.Models.Db
         [Key]
         public int CdLog { get; set; }
 
+        [ForeignKey("Usuario")]
         public int? CdUsuario { get; set; }
 
         [StringLength(200)]
         public string DcLog { get; set; }
 
         public DateTime DtLog { get; set; } = DateTime.Now;
+
+        public Usuario Usuario { get; set; }
+
     }
 }

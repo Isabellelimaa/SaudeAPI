@@ -32,7 +32,7 @@ namespace SaudeAPI.src.Models.Controllers
 
         public string DcTlfone { get; set; }
 
-        public List<int> Referencia { get; set; }
+        public List<int> CdReferencia { get; set; }
 
         public int QtLeito { get; set; }
     }
@@ -52,5 +52,38 @@ namespace SaudeAPI.src.Models.Controllers
         public string DcComplmnto { get; set; }
 
         public string DcCep { get; set; }
+    }
+
+    public class CreateSolicitacao
+    {
+        public int CdUsuario { get; set; }
+        public int CdHsptal { get; set; }
+
+
+        public PacienteSlctcao Paciente { get; set; }
+
+        public string DcMotivo { get; set; }
+
+        public List<int> CdExame { get; set; }
+
+        public List<int> CdEnfrmdade { get; set; }
+    }
+
+    public class PacienteSlctcao
+    {
+        public string NmPaciente { get; set; }
+
+        public string DcCpf { get; set; }
+
+        public string DcRg { get; set; }
+    }
+
+    public class CreateSolicitacaoObs
+    {
+        public int CdSlctcao { get; set; }
+
+        public string DcObs { get; set; }
+
+        public int CdUsuarioRgst { get; set; }
     }
 }

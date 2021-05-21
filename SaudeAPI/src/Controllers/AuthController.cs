@@ -7,7 +7,7 @@ using SaudeAPI.src.Models.Controllers;
 
 namespace SaudeAPI.Controllers
 {
-    //[Authorize("Bearer")]
+    [Authorize("Bearer")]
     [Route("usuario")]
     [ApiController]
     public class AuthController : ControllerBase

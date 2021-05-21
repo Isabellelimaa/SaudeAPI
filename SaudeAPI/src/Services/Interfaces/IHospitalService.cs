@@ -1,11 +1,17 @@
 ﻿using SaudeAPI.Models;
-using SaudeAPI.Models.Db;
 using System.Threading.Tasks;
 
-namespace SaudeAPI.src.Services
+namespace SaudeAPI.src.Services.Interfaces
 {
     public interface IHospitalService
     {
-        Task<RespostaControlador> CreateHsptal(Hsptal hsptal);
+        Task<RespostaControlador> Get(int cdHsptal);
+
+        Task<RespostaControlador> ListReferencias();
+
+        Task<RespostaControlador> ListEnfermidades();
+
+        Task<RespostaControlador> ListExames();
+
     }
 }

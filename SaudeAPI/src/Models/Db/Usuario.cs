@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,11 +25,15 @@ namespace SaudeAPI.Models.Db
         public string DcSenha { get; set; }
         [StringLength(150)]
         public string DcEmail { get; set; }
-        public int CdHsptal { get; set; }
         [StringLength(255)]
         public string DcTokencel { get; set; }
 
-        [ForeignKey("CdHsptal")]
         public Hsptal Hsptal { get; set; }
+
+        public List<Slctcao> Slctcao { get; set; }
+        public List<SlctcaoObs> SlctcaoObs { get; set; }
+        public List<Paciente> Paciente { get; set; }
+        public List<Log> Log { get; set; }
+
     }
 }

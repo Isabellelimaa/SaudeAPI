@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SaudeAPI.Models.Db;
-using SaudeAPI.Services.Interfaces;
-using SaudeAPI.src.Services;
+using SaudeAPI.src.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SaudeAPI.src.Controllers
 {        
-    [Authorize("Bearer")]
+    //[Authorize("Bearer")]
     [Route("hospital")]
     [ApiController]
     public class HospitalController : ControllerBase
@@ -23,12 +19,60 @@ namespace SaudeAPI.src.Controllers
             _hospitalService = hospitalService;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Object>> CreateHospital([FromBody] Hsptal hsptal)
+        [HttpGet("{cdHsptal}")]
+        public async Task<ActionResult<Object>> Get(int cdHsptal)
         {
             try
             {
-                var request = await _hospitalService.CreateHsptal(hsptal);
+                var request = await _hospitalService.Get(cdHsptal);
+                if (!request.Sucesso)
+                    return BadRequest(request.Mensagem);
+                return Ok(request);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("list-referencia")]
+        public async Task<ActionResult<Object>> ListReferencias()
+        {
+            try
+            {
+                var request = await _hospitalService.ListReferencias();
+                if (!request.Sucesso)
+                    return BadRequest(request.Mensagem);
+                return Ok(request);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("list-enfermidades")]
+        public async Task<ActionResult<Object>> ListEnfermidades()
+        {
+            try
+            {
+                var request = await _hospitalService.ListEnfermidades();
+                if (!request.Sucesso)
+                    return BadRequest(request.Mensagem);
+                return Ok(request);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("list-exames")]
+        public async Task<ActionResult<Object>> ListExames()
+        {
+            try
+            {
+                var request = await _hospitalService.ListExames();
                 if (!request.Sucesso)
                     return BadRequest(request.Mensagem);
                 return Ok(request);

@@ -7,6 +7,7 @@ namespace SaudeAPI.Models.Db
     {
         [Key]
         public int CdStatus { get; set; }
+
         [StringLength(200)]
         public string NmStatus { get; set; }
 

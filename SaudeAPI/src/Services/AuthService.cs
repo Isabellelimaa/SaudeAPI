@@ -68,17 +68,16 @@ namespace SaudeAPI.Services
                 if (string.IsNullOrEmpty(createUsuario.DcLogin) || string.IsNullOrEmpty(createUsuario.DcSenha) || string.IsNullOrEmpty(createUsuario.DcEmail))
                     return new RespostaControlador(false, "Usuario, senha ou email não informados.");
 
-                user = await _context.Usuario
-                               .FirstOrDefaultAsync(f => f.DcLogin.ToLower() == createUsuario.DcLogin.ToLower());
+                //user = await _context.Usuario
+                //               .FirstOrDefaultAsync(f => f.DcLogin.ToLower() == createUsuario.DcLogin.ToLower());
 
-                if (user != null)
-                    return new RespostaControlador(false, "Usuário já cadastrado.");
+                //if (user.CdUsuario != 0)
+                //    return new RespostaControlador(false, "Usuário já cadastrado.");
 
                 var newSenha = _crypto.ChangePassword(createUsuario.DcSenha);
 
-                var newUsuario = new Usuario(createUsuario.DcLogin, createUsuario.DcSenha, createUsuario.DcSenha);
-                
-                await _context.AddAsync<Usuario>(user);
+                var newUsuario = new Usuario(createUsuario.DcLogin.ToLower(), newSenha, createUsuario.DcEmail);
+                await _context.Usuario.AddAsync(newUsuario);
 
                 var newEndrco = new Endrco(
                     createUsuario.Endereco.NmEstado,
@@ -88,8 +87,8 @@ namespace SaudeAPI.Services
                     createUsuario.Endereco.NrNumero,
                     createUsuario.Endereco.DcComplmnto,
                     createUsuario.Endereco.DcCep);
+                await _context.Endrco.AddAsync(newEndrco);
 
-                await _context.AddAsync<Endrco>(newEndrco);
                 await _context.SaveChangesAsync();
 
                 var newHsptal = new Hsptal(
@@ -99,7 +98,15 @@ namespace SaudeAPI.Services
                     createUsuario.Hospital.DcTlfone,
                     createUsuario.Hospital.QtLeito);
 
-                await _context.AddAsync<Hsptal>(newHsptal);
+                await _context.Hsptal.AddAsync(newHsptal);
+                await _context.SaveChangesAsync();
+
+                foreach (var cdReferencia in createUsuario.Hospital.CdReferencia)
+                {
+                    var newHsptalRefrncia = new HsptalRefrncia(newHsptal.CdHsptal, cdReferencia);
+                    await _context.HsptalRefrncia.AddAsync(newHsptalRefrncia);
+                }
+
                 await _context.SaveChangesAsync();
 
                 return new RespostaControlador(true, "Usuário criado com sucesso.", newUsuario);
