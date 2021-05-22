@@ -7,6 +7,8 @@ namespace SaudeAPI.src.Services.Interfaces
     {
         Task<RespostaControlador> Get(int cdHsptal);
 
+        Task<RespostaControlador> Search(int? cdEnfermidade = null);
+
         Task<RespostaControlador> ListReferencias();
 
         Task<RespostaControlador> ListEnfermidades();

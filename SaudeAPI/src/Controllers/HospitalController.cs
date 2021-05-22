@@ -35,6 +35,22 @@ namespace SaudeAPI.src.Controllers
             }
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<Object>> Search(int? cdEnfermidade)
+        {
+            try
+            {
+                var request = await _hospitalService.Search(cdEnfermidade);
+                if (!request.Sucesso)
+                    return BadRequest(request.Mensagem);
+                return Ok(request);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpGet("list-referencia")]
         public async Task<ActionResult<Object>> ListReferencias()
         {

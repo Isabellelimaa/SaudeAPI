@@ -61,9 +61,59 @@ namespace SaudeAPI.src.Services
             {
                 var slctcao = await _context.Slctcao
                     .Include(i => i.Hsptal)
+                    .ThenInclude(t => t.Endrco)
+                    .Include(i => i.Hsptal.HsptalRefrncia)
+                    .ThenInclude(t => t.Refrncia)
                     .Include(i => i.Paciente)
                     .Include(i => i.SlctcaoEnfrmdade)
                     .Include(i => i.SlctcaoExame)
+                    .ThenInclude(t => t.Exame)
+                    .Include(i => i.Status)
+                    .Select(s => new
+                    {
+                        s.CdSlctcao,
+                        s.DcMotivo,
+                        DtRgst = s.DtRgst.ToString("dd/MM/yyyy"),
+                        SlctcaoExame = s.SlctcaoExame.Select(a => new
+                        {
+                            a.Exame.CdExame,
+                            a.Exame.NmExame,
+                        }),
+                        Status = new
+                        {
+                            s.Status.CdStatus,
+                            s.Status.NmStatus,
+                        },
+                        Hsptal = new
+                        {
+                            s.Hsptal.NmHsptal,
+                            s.Hsptal.DcTlfone,
+                            s.Hsptal.QtLeito,
+                            Endrco = new
+                            {
+                                s.Hsptal.Endrco.NmPais,
+                                s.Hsptal.Endrco.NmEstado,
+                                s.Hsptal.Endrco.NmCidade,
+                                s.Hsptal.Endrco.NmBairro,
+                                s.Hsptal.Endrco.NmRua,
+                                s.Hsptal.Endrco.NrNumero,
+                                s.Hsptal.Endrco.DcComplmnto,
+                                s.Hsptal.Endrco.DcCep,
+                            },
+                            Refrncia = s.Hsptal.HsptalRefrncia.Select(a => new
+                            {
+                                a.Refrncia.CdRefrncia,
+                                a.Refrncia.NmRefrncia,
+                            }),
+                        },
+                        Paciente = new
+                        {
+                            s.Paciente.CdPaciente,
+                            s.Paciente.NmPaciente,
+                            s.Paciente.DcCpf,
+                            s.Paciente.DcRg,
+                        },
+                    })
                     .FirstOrDefaultAsync(f => f.CdSlctcao == cdSlctcao);
 
                 return new RespostaControlador(true, "Listagem realizada com sucesso.", slctcao);
@@ -80,10 +130,33 @@ namespace SaudeAPI.src.Services
             {
                 var slctcoes = await _context.Slctcao
                     .Where(w => w.CdHsptal == cdHsptal)
-                    .Include(i => i.Hsptal)
                     .Include(i => i.Paciente)
-                    .Include(i => i.SlctcaoEnfrmdade)
-                    .Include(i => i.SlctcaoExame)
+                    .Include(i => i.Status)
+                    .Include(i => i.SlctcaoObs)
+                    .Select(s => new
+                    {
+                        s.CdSlctcao,
+                        s.DcMotivo,
+                        DataRegistro = s.DtRgst.ToString("dd/MM/yyyy"),
+                        Status = new
+                        {
+                            s.Status.CdStatus,
+                            s.Status.NmStatus,
+                        },
+                        Paciente = new
+                        {
+                            s.Paciente.CdPaciente,
+                            s.Paciente.NmPaciente,
+                            s.Paciente.DcCpf,
+                            s.Paciente.DcRg,
+                        },
+                        SlctcaoObs = s.SlctcaoObs.OrderByDescending(o => o.DtRgst).Select(a => new
+                        {
+                            a.CdSlctcaoObs,
+                            a.DcObs,
+                            DtRgst = a.DtRgst.ToString("dd/MM/yyyy"),
+                        }).First(),
+                    })
                     .ToListAsync();
 
                 return new RespostaControlador(true, "Listagem realizada com sucesso.", slctcoes);
@@ -100,10 +173,33 @@ namespace SaudeAPI.src.Services
             {
                 var slctcoes = await _context.Slctcao
                     .Where(w => w.CdUsuarioRgst == cdUsuario)
-                    .Include(i => i.Hsptal)
                     .Include(i => i.Paciente)
-                    .Include(i => i.SlctcaoEnfrmdade)
-                    .Include(i => i.SlctcaoExame)
+                    .Include(i => i.Status)
+                    .Include(i => i.SlctcaoObs)
+                    .Select(s => new
+                    {
+                        s.CdSlctcao,
+                        s.DcMotivo,
+                        DataRegistro = s.DtRgst.ToString("dd/MM/yyyy"),
+                        Status = new
+                        {
+                            s.Status.CdStatus,
+                            s.Status.NmStatus,
+                        },
+                        Paciente = new
+                        {
+                            s.Paciente.CdPaciente,
+                            s.Paciente.NmPaciente,
+                            s.Paciente.DcCpf,
+                            s.Paciente.DcRg,
+                        },
+                        SlctcaoObs = s.SlctcaoObs.OrderByDescending(o => o.DtRgst).Select(a => new
+                        {
+                            a.CdSlctcaoObs,
+                            a.DcObs,
+                            DtRgst = a.DtRgst.ToString("dd/MM/yyyy"),
+                        }).First(),
+                    })
                     .ToListAsync();
 
                 return new RespostaControlador(true, "Listagem realizada com sucesso.", slctcoes);
@@ -118,7 +214,17 @@ namespace SaudeAPI.src.Services
         {
             try
             {
-                var slctcaoObs = await _context.SlctcaoObs.Where(w => w.CdSlctcao == cdSlctcao).OrderBy(o => o.DtRgst).ToListAsync();
+                var slctcaoObs = await _context.SlctcaoObs
+                    .Where(w => w.CdSlctcao == cdSlctcao)
+                    .OrderBy(o => o.DtRgst)
+                    .Select(s => new
+                    {
+                        s.CdSlctcaoObs,
+                        s.DcObs,
+                        s.CdUsuarioRgst,
+                        DtRgst = s.DtRgst.ToString("dd/MM/yyyy"),
+                    })
+                    .ToListAsync();
 
                 return new RespostaControlador(true, "Listagem realizada com sucesso.", slctcaoObs);
             }
@@ -132,7 +238,9 @@ namespace SaudeAPI.src.Services
         {
             try
             {
-                var slctcao = _context.Slctcao.Where(w => w.CdSlctcao == cdSlctcao).FirstOrDefault();
+                var slctcao = _context.Slctcao
+                    .Where(w => w.CdSlctcao == cdSlctcao)
+                    .FirstOrDefault();
 
                 if(slctcao == null)
                     return new RespostaControlador(false, "Solicitação não encontrada.");
@@ -154,7 +262,9 @@ namespace SaudeAPI.src.Services
         {
             try
             {
-                var slctcao = _context.Slctcao.Where(w => w.CdSlctcao == createSolicitacaoObs.CdSlctcao).FirstOrDefault();
+                var slctcao = _context.Slctcao
+                    .Where(w => w.CdSlctcao == createSolicitacaoObs.CdSlctcao)
+                    .FirstOrDefault();
 
                 if (slctcao == null)
                     return new RespostaControlador(false, "Solicitação não encontrada.");
