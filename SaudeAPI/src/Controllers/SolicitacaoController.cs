@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SaudeAPI.src.Controllers
 {
-    //[Authorize("Bearer")]
+    [Authorize("Bearer")]
     [Route("solicitacao")]
     [ApiController]
     public class SolicitacaoController : ControllerBase

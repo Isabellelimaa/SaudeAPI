@@ -5,8 +5,8 @@ using System;
 using System.Threading.Tasks;
 
 namespace SaudeAPI.src.Controllers
-{        
-    //[Authorize("Bearer")]
+{
+    [Authorize("Bearer")]
     [Route("hospital")]
     [ApiController]
     public class HospitalController : ControllerBase
