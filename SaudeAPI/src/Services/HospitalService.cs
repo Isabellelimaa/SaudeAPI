@@ -131,7 +131,8 @@ namespace SaudeAPI.src.Services
             try
             {
                 var refrncias = await _context.Refrncia
-                    .Select(s => new { s.CdRefrncia, s.NmRefrncia})
+                    .Select(s => new { Key = s.CdRefrncia, Value = s.NmRefrncia})
+                    .OrderBy(o => o.Value)
                     .ToListAsync();
 
                 return new RespostaControlador(true, "Listagem realizada com sucesso.", refrncias);
@@ -147,7 +148,8 @@ namespace SaudeAPI.src.Services
             try
             {
                 var enfrmdades = await _context.Enfrmdade
-                    .Select(s => new { s.CdEnfrmdade, s.NmEnfrmdade })
+                    .Select(s => new { Key = s.CdEnfrmdade, Value = s.NmEnfrmdade })
+                    .OrderBy(o => o.Value)
                     .ToListAsync();
 
                 return new RespostaControlador(true, "Listagem realizada com sucesso.", enfrmdades);
@@ -164,6 +166,7 @@ namespace SaudeAPI.src.Services
             {
                 var exames = await _context.Exame
                     .Select(s => new { s.CdExame, s.NmExame })
+                    .OrderBy(o => o.NmExame)
                     .ToListAsync();
 
                 return new RespostaControlador(true, "Listagem realizada com sucesso.", exames);

@@ -51,6 +51,7 @@ namespace SaudeAPI.src.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("list-referencia")]
         public async Task<ActionResult<Object>> ListReferencias()
         {
@@ -67,6 +68,7 @@ namespace SaudeAPI.src.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("list-enfermidades")]
         public async Task<ActionResult<Object>> ListEnfermidades()
         {
@@ -83,6 +85,7 @@ namespace SaudeAPI.src.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("list-exames")]
         public async Task<ActionResult<Object>> ListExames()
         {

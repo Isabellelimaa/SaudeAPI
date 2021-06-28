@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SaudeAPI.Configurations;
@@ -30,14 +31,34 @@ namespace SaudeAPI.Services
         {
             try
             {
-                var user = new Usuario();
+                dynamic user;
                 bool validCredentials = false;
 
                 if (string.IsNullOrEmpty(dcLogin) || string.IsNullOrEmpty(dcSenha))
                     return new RespostaControlador(false, "Usuario ou senha inválido.");
 
                 user = await _context.Usuario
-                    .FirstOrDefaultAsync(f => f.DcLogin.ToLower() == dcLogin.ToLower());
+                        .Include(i => i.Hsptal)
+                        .Include(i => i.Hsptal.HsptalRefrncia)
+                        .ThenInclude(t => t.Refrncia)
+                        .Select(s => new
+                        {
+                            s.CdUsuario,
+                            s.DcLogin,
+                            s.DcEmail,
+                            s.DcSenha,
+                            Hsptal = new
+                            {
+                                s.Hsptal.NmHsptal,
+                                s.Hsptal.CdHsptal,
+                                Refrncia = s.Hsptal.HsptalRefrncia.Select(a => new
+                                {
+                                    a.Refrncia.CdRefrncia,
+                                    a.Refrncia.NmRefrncia,
+                                }),
+                            },
+                        })
+                        .FirstOrDefaultAsync(f => f.DcLogin.ToLower() == dcLogin.ToLower());
 
                 if (user == null)
                     return new RespostaControlador(false, "Usuário não encontrado.");

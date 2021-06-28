@@ -173,6 +173,7 @@ namespace SaudeAPI.src.Services
             {
                 var slctcoes = await _context.Slctcao
                     .Where(w => w.CdUsuarioRgst == cdUsuario)
+                    .Include(i => i.Hsptal)
                     .Include(i => i.Paciente)
                     .Include(i => i.Status)
                     .Include(i => i.SlctcaoObs)
@@ -192,6 +193,12 @@ namespace SaudeAPI.src.Services
                             s.Paciente.NmPaciente,
                             s.Paciente.DcCpf,
                             s.Paciente.DcRg,
+                        },
+                        Hsptal = new
+                        {
+                            s.Hsptal.NmHsptal,
+                            s.Hsptal.DcTlfone,
+                            s.Hsptal.QtLeito,
                         },
                         SlctcaoObs = s.SlctcaoObs.OrderByDescending(o => o.DtRgst).Select(a => new
                         {

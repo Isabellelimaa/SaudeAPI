@@ -21,11 +21,11 @@ namespace SaudeAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] string dcLogin, string dcSenha)
+        public async Task<ActionResult> Login([FromBody] LoginUser loginUser)
         {
             try
             {
-                var request = await _authService.Login(dcLogin, dcSenha);
+                var request = await _authService.Login(loginUser.dcLogin, loginUser.dcSenha);
                 if (!request.Sucesso)
                     return BadRequest(request.Mensagem);
                 return Ok(request);
